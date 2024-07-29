@@ -1,4 +1,5 @@
 from datetime import datetime
+import sys
 
 # Función para calcular la diferencia entre dos horas
 def calcular_diferencia(hora1: datetime, hora2:datetime):
@@ -10,13 +11,15 @@ def calcular_diferencia(hora1: datetime, hora2:datetime):
 
 # Leer el archivo y procesar las líneas
 resultados = {}
-with open('t1.txt', 'r') as archivo:
+resultado = datetime.strptime("00:00", "%H:%M")
+with open(sys.argv[1], 'r') as archivo:
     for linea in archivo:
         partes = linea.strip().split()
         hora1 = partes[0]
         hora2 = partes[1]
         nombre = partes[2]
         diferencia = calcular_diferencia(hora1, hora2)
+        resultado += diferencia
         if nombre in resultados:
             resultados[nombre] += diferencia
         else:
@@ -25,6 +28,7 @@ with open('t1.txt', 'r') as archivo:
 # Mostrar los resultados
 for nombre, diferencia in resultados.items():
     print(f"{nombre}: {diferencia}")
+print("Total de horas: " + str(resultado))
 
 # Guardar los resultados en una lista
 lista_resultados = [(nombre, diferencia) for nombre, diferencia in resultados.items()]

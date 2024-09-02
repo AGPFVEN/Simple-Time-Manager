@@ -15,10 +15,14 @@ resultado = datetime.strptime("00:00", "%H:%M")
 with open(sys.argv[1], 'r') as archivo:
     for linea in archivo:
         partes = linea.strip().split()
-        hora1 = partes[0]
-        hora2 = partes[1]
-        nombre = partes[2]
-        diferencia = calcular_diferencia(hora1, hora2)
+        horas = []
+        for i in partes:
+            if i[0].isdigit() == True:
+                horas.append(i)
+            else:
+                nombre = i
+
+        diferencia = calcular_diferencia(horas[0], horas[1])
         resultado += diferencia
         if nombre in resultados:
             resultados[nombre] += diferencia

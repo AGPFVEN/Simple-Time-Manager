@@ -15,21 +15,34 @@ descripciones = {}
 hora_previa = ""
 resultado = datetime.strptime("00:00", "%H:%M")
 with open(sys.argv[1], 'r') as archivo:
+
     for linea in archivo:
         descripcion_aux = ""
         partes = linea.strip().split()
         horas = []
+        en_parentesis = 0
         for i in partes:
-            if i[0].isdigit() == True:
+            if en_parentesis == 1:
+                if i[-1] == ')':
+                    en_parentesis = 0
+                    descripcion_aux += " " + i[:-1]
+                else:
+                    descripcion_aux += " " + i
+            elif i[0].isdigit() == True:
                 horas.append(i)
             elif i[0] == '(':
-                descripcion_aux = i[1:-1]
+                if i[-1] == ')':
+                    descripcion_aux = i[1:-1]
+                else:
+                    descripcion_aux = i[1:]
+                    en_parentesis = 1
             else:
                 nombre = i
         
         if len(horas) == 1:
             horas.insert(0, hora_previa)
 
+        print(horas)
         hora_previa = horas[1]
 
         diferencia = calcular_diferencia(horas[0], horas[1])

@@ -11,16 +11,26 @@ def calcular_diferencia(hora1: datetime, hora2:datetime):
 
 # Leer el archivo y procesar las líneas
 resultados = {}
+descripciones = {}
+hora_previa = ""
 resultado = datetime.strptime("00:00", "%H:%M")
 with open(sys.argv[1], 'r') as archivo:
     for linea in archivo:
+        descripcion_aux = ""
         partes = linea.strip().split()
         horas = []
         for i in partes:
             if i[0].isdigit() == True:
                 horas.append(i)
+            elif i[0] == '(':
+                descripcion_aux = i[1:-1]
             else:
                 nombre = i
+        
+        if len(horas) == 1:
+            horas.insert(0, hora_previa)
+
+        hora_previa = horas[1]
 
         diferencia = calcular_diferencia(horas[0], horas[1])
         resultado += diferencia
@@ -29,9 +39,24 @@ with open(sys.argv[1], 'r') as archivo:
         else:
             resultados[nombre] = diferencia
 
+        if (descripcion_aux == ""):
+            descripcion_aux = "non-specified"
+
+        if nombre not in descripciones:
+            descripciones[nombre] = {}
+
+        if descripcion_aux in descripciones[nombre]:
+            descripciones[nombre][descripcion_aux] += diferencia
+        else:
+            descripciones[nombre][descripcion_aux] = diferencia
+
+
 # Mostrar los resultados
 for nombre, diferencia in resultados.items():
     print(f"{nombre}: {diferencia}")
+    if nombre in descripciones:
+        for i in descripciones[nombre]:
+                print(f"   + {i}: {descripciones[nombre][i]}")
 print("Total de horas: " + str(resultado))
 
 # Guardar los resultados en una lista

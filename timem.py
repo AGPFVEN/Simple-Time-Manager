@@ -42,7 +42,6 @@ with open(sys.argv[1], 'r') as archivo:
         if len(horas) == 1:
             horas.insert(0, hora_previa)
 
-        print(horas)
         hora_previa = horas[1]
 
         diferencia = calcular_diferencia(horas[0], horas[1])
@@ -70,7 +69,7 @@ for nombre, diferencia in resultados.items():
     if nombre in descripciones:
         for i in descripciones[nombre]:
                 print(f"   + {i}: {descripciones[nombre][i]}")
-print("Total de horas: " + str(resultado))
+print("Total de horas: " + str(resultado.hour) + ":" + str(resultado.minute))
 
 # Guardar los resultados en una lista
 lista_resultados = [(nombre, diferencia) for nombre, diferencia in resultados.items()]

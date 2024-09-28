@@ -58,9 +58,9 @@ with open(sys.argv[1], 'r') as archivo:
             descripciones[nombre] = {}
 
         if descripcion_aux in descripciones[nombre]:
-            descripciones[nombre][descripcion_aux] += diferencia
+            descripciones[nombre][descripcion_aux] += diferencia.seconds
         else:
-            descripciones[nombre][descripcion_aux] = diferencia
+            descripciones[nombre][descripcion_aux] = diferencia.seconds
 
 
 # Mostrar los resultados
@@ -68,8 +68,9 @@ for nombre, diferencia in resultados.items():
     print(f"{nombre}: {diferencia}")
     if nombre in descripciones:
         for i in descripciones[nombre]:
-                print(f"   + {i}: {descripciones[nombre][i]}")
-print("Total de horas: " + str(resultado.hour) + ":" + str(resultado.minute))
+                print(f"   + {i}: {int(descripciones[nombre][i] / 3600)}h {int((descripciones[nombre][i] % 3600) / 60)}min")
+
+print("Total de horas: " + str(resultado.hour + ((resultado.day - 1) * 24)) + ":" + str(resultado.minute))
 
 # Guardar los resultados en una lista
 lista_resultados = [(nombre, diferencia) for nombre, diferencia in resultados.items()]
